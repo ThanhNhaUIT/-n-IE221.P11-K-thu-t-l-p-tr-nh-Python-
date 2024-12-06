@@ -1,0 +1,105 @@
+App 1: Khách Hàng (customer)
+1. Trang Đăng nhập/Đăng ký
+Template: customer/login.html
+
+Chức năng:
+
+Form đăng nhập (email/số điện thoại, mật khẩu).
+Link chuyển sang trang đăng ký tài khoản.
+Template: customer/register.html
+
+Chức năng:
+
+Form đăng ký tài khoản (họ tên, email, số điện thoại, mật khẩu).
+2. Trang Danh sách khách sạn
+Template: customer/hotel_list.html
+Chức năng:
+Hiển thị danh sách khách sạn (tên, địa chỉ, số phòng trống, giá thấp nhất).
+Tìm kiếm hoặc lọc khách sạn theo tên, địa điểm.
+3. Trang Danh sách phòng trống
+Template: customer/room_list.html
+Chức năng:
+Hiển thị danh sách các phòng còn trống trong khách sạn đã chọn.
+Chi tiết hiển thị: loại phòng, giá, sức chứa, tình trạng phòng.
+Nút "Đặt phòng".
+4. Trang Đặt phòng
+Template: customer/booking_form.html
+Chức năng:
+Form đặt phòng: chọn ngày đến, ngày đi, số lượng khách.
+Hiển thị giá dự kiến.
+5. Trang Xem thông tin đặt phòng
+Template: customer/booking_detail.html
+Chức năng:
+Hiển thị chi tiết đặt phòng: khách sạn, phòng, ngày, giá, trạng thái.
+Nút "Hủy đặt phòng" (nếu trạng thái chưa hoàn tất).
+App 2: Quản Lý (management)
+1. Trang Đăng nhập quản lý
+Template: management/login.html
+Chức năng:
+Form đăng nhập dành riêng cho quản lý.
+2. Trang Quản lý khách sạn
+Template: management/hotel_list.html
+
+Chức năng:
+
+Danh sách các khách sạn đang quản lý.
+Nút thêm khách sạn.
+Nút "Sửa" và "Xóa" cho từng khách sạn.
+Template: management/hotel_form.html
+
+Chức năng:
+
+Form thêm/sửa thông tin khách sạn (tên, địa chỉ, số điện thoại, email).
+3. Trang Quản lý phòng
+Template: management/room_list.html
+
+Chức năng:
+
+Danh sách các phòng trong khách sạn.
+Nút thêm phòng mới.
+Nút "Sửa" và "Xóa" trạng thái phòng.
+Template: management/room_form.html
+
+Chức năng:
+
+Form thêm/sửa thông tin phòng (loại phòng, giá, sức chứa, trạng thái).
+4. Trang Quản lý đặt phòng
+Template: management/booking_list.html
+Chức năng:
+Danh sách đặt phòng (theo ngày, trạng thái, khách sạn).
+Các trạng thái: "Đã thanh toán", "Chưa thanh toán", "Đã hủy".
+Nút xác nhận/huỷ đặt phòng.
+5. Trang Quản lý hóa đơn
+Template: management/invoice_list.html
+Chức năng:
+Hiển thị danh sách hóa đơn (theo khách sạn, trạng thái).
+Nút "Cập nhật trạng thái thanh toán".
+Trang dùng chung (Common)
+Các trang này có thể được sử dụng cho cả hai app:
+
+Trang chủ:
+Template: base/index.html
+Giới thiệu hệ thống hoặc điều hướng đến trang đăng nhập khách/nhân viên quản lý.
+Trang lỗi (404/500):
+Template: base/404.html, base/500.html
+Hiển thị thông báo lỗi khi không tìm thấy trang hoặc lỗi hệ thống.
+Layout cơ bản:
+Template: base/layout.html
+Template gốc chứa phần header, footer, và các thẻ {% block content %} để nhúng nội dung từ các trang con.
+Tóm tắt tên template
+App customer:
+    login.html, register.html
+    hotel_list.html
+    room_list.html
+    booking_form.html
+    booking_detail.html
+App management:
+    login.html
+    hotel_list.html, hotel_form.html
+    room_list.html, room_form.html
+    booking_list.html
+    invoice_list.html
+Dùng chung:
+    index.html
+    404.html, 500.html
+    layout.html
