@@ -1,0 +1,42 @@
+<!-- customer/templates/customer/booking_list.html -->
+{% extends "base.html" %}
+
+{% block title %}
+Phòng Đã Đặt
+{% endblock %}
+
+
+{% block content %}
+<div class="container my-4">
+    <h1 class="text-center mb-4">Phòng Đã Đặt</h1>
+    
+    {% if bookings %}
+        <div class="row">
+            {% for booking in bookings %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            {% comment %} <h5 class="card-title">Khách sạn: {{ booking.hotel.hotel_name }}</h5>
+                            <p class="card-text">Ngày đến: {{ booking.check_in_date }}</p>
+                            <p class="card-text">Ngày đi: {{ booking.check_out_date }}</p>
+                            <p class="card-text">Số lượng khách: {{ booking.guests }}</p>
+                            <p class="card-text">Tổng giá: {{ booking.total_price }}</p>
+                            <a href="{% url 'customer:booking_detail' booking.id %}" class="btn btn-primary">Xem Chi Tiết</a>
+                            <a href="{% url 'customer:cancel_booking' booking.id %}" class="btn btn-danger ms-2">Hủy</a> {% endcomment %}
+                            <h5 class="card-title">Khách sạn: ...</h5>
+                            <p class="card-text">Ngày đến: ...</p>
+                            <p class="card-text">Ngày đi: ...</p>
+                            <p class="card-text">Số lượng khách: ...</p>
+                            <p class="card-text">Tổng giá: ...</p>
+                            <a href="#" class="btn btn-primary">Xem Chi Tiết</a>
+                            <a href="#" class="btn btn-danger ms-2">Hủy</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center">Bạn chưa đặt phòng nào.</p>
+    {% endif %}
+</div>
+{% endblock %}
