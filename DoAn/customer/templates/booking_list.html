@@ -1,10 +1,8 @@
-<!-- customer/templates/customer/booking_list.html -->
 {% extends "base.html" %}
 
 {% block title %}
 Phòng Đã Đặt
 {% endblock %}
-
 
 {% block content %}
 <div class="container my-4">
@@ -15,21 +13,15 @@ Phòng Đã Đặt
             {% for booking in bookings %}
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
+                        <img src="{{ booking.room_number.ImageURL }}" class="card-img-top" alt="{{ booking.room_number.room_type }}" style="width: 100%; height: 300px; object-fit: cover;">
                         <div class="card-body">
-                            {% comment %} <h5 class="card-title">Khách sạn: {{ booking.hotel.hotel_name }}</h5>
-                            <p class="card-text">Ngày đến: {{ booking.check_in_date }}</p>
-                            <p class="card-text">Ngày đi: {{ booking.check_out_date }}</p>
-                            <p class="card-text">Số lượng khách: {{ booking.guests }}</p>
-                            <p class="card-text">Tổng giá: {{ booking.total_price }}</p>
-                            <a href="{% url 'customer:booking_detail' booking.id %}" class="btn btn-primary">Xem Chi Tiết</a>
-                            <a href="{% url 'customer:cancel_booking' booking.id %}" class="btn btn-danger ms-2">Hủy</a> {% endcomment %}
-                            <h5 class="card-title">Khách sạn: ...</h5>
-                            <p class="card-text">Ngày đến: ...</p>
-                            <p class="card-text">Ngày đi: ...</p>
-                            <p class="card-text">Số lượng khách: ...</p>
-                            <p class="card-text">Tổng giá: ...</p>
-                            <a href="#" class="btn btn-primary">Xem Chi Tiết</a>
-                            <a href="#" class="btn btn-danger ms-2">Hủy</a>
+                            <h5 class="card-title">{{ booking.room_number.room_type }}</h5>
+                            <p class="card-text">Khách sạn: {{ booking.hotel_name.hotel_name }}</p>
+                            <p class="card-text">Số phòng: {{ booking.room_number.room_number }}</p>
+                            <p class="card-text">Ngày đặt: {{ booking.booking_date }}</p>
+                            <p class="card-text">Số ngày lưu trú: {{ booking.day_stay }}</p>
+                            <a href="#" class="btn btn-info">Xem Chi Tiết</a>
+                            <a href="#" class="btn btn-danger">Hủy</a>
                         </div>
                     </div>
                 </div>

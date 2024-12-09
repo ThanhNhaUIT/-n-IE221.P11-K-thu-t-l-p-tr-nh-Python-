@@ -31,4 +31,12 @@
   outline: 0;
 }
 
+.no-booking .card {
+  height: auto;
+  padding: 0.5rem;
+  transition: height 0.3s ease;
+}
+.no-booking .card-body {
+  display: none; /* Hide the body content */
+}
 

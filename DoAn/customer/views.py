@@ -3,11 +3,12 @@ from django.shortcuts import render
 # Create your views here.
 
 
-from management.models import Hotel  # Import từ app management
+from .models import *  # Import từ app management
 
 def hotel_list(request):
-    hotels = Hotel.objects.all().values('hotel_name', 'address', 'phone_number', 'email')
-    return render(request, 'hotel_list.html', {'hotels': hotels})
+    hotels = Hotel.objects.all()
+    context = {'hotels': hotels}
+    return render(request, 'hotel_list.html', context)
 
 
 
@@ -25,7 +26,14 @@ def about(request):
 #     return render(request, 'customer/booking_list.html', {'bookings': bookings})
 
 def booking_list(request):
-    return render(request, 'booking_list.html')
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        bookings = Booking.objects.filter(customer=customer)  # Fetch all active bookings for the customer
+        context = {'bookings': bookings}
+    else:
+        context = {'bookings': []}  # If the user is not authenticated, show an empty list
+
+    return render(request, 'booking_list.html', context)
 
 # DoAn/customer/views.py
 from django.contrib.auth import views as auth_views
@@ -33,54 +41,64 @@ from django.contrib.auth import views as auth_views
 def login_view(request):
     return auth_views.LoginView.as_view(template_name='login.html')(request)
 
-
-# from django.shortcuts import render, redirect
-# from django.contrib.auth import authenticate, login
-# from django.http import HttpResponse
-
-# def login_view(request):
-#     if request.method == 'POST':
-#         username = request.POST['username']
-#         birthdate = request.POST['birthdate']
-#         phone_number = request.POST['phone_number']
-#         email = request.POST['email']
-#         password = request.POST['password']
-        
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             login(request, user)
-#             return redirect('customer:home')
-#         else:
-#             return HttpResponse('Lỗi đăng nhập, vui lòng thử lại.')
-#     else:
-#         return render(request, 'login.html')
-
-
-# customer/views.py
-
-# from django.shortcuts import render, redirect
-# from django.contrib.auth.models import User
-# from django.contrib import messages
-
-# def register(request):
-#     if request.method == "POST":
-#         name = request.POST['name']
-#         dob = request.POST['dob']
-#         phone_number = request.POST['phone_number']
-#         email = request.POST['email']
-#         password = request.POST['password']
-#         confirm_password = request.POST['confirm_password']
-        
-#         if password == confirm_password:
-#             # Tạo người dùng mới
-#             user = User.objects.create_user(username=email, email=email, password=password, first_name=name)
-#             user.save()
-#             messages.success(request, 'Đăng ký thành công!')
-#             return redirect('login')
-#         else:
-#             messages.error(request, 'Mật khẩu xác nhận không đúng.')
-    
-#     return render(request, 'register.html')
-
 def register(request):
     return render(request, 'register.html')
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import Hotel, Room
+def room_list(request, hotel_id):
+    hotel = get_object_or_404(Hotel, pk=hotel_id)  # Fetch the selected hotel
+    rooms = Room.objects.filter(hotel=hotel)  # Filter rooms by hotel
+    context = {
+        'hotel': hotel,
+        'rooms': rooms,
+    }
+    return render(request, 'room_list.html', context)
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Booking, Invoice, Room
+from .forms import BookingForm, InvoiceForm
+from django.utils import timezone
+
+@login_required
+def book_room(request, room_id):
+    room = Room.objects.get(id=room_id)
+
+    if request.method == 'POST':
+        booking_form = BookingForm(request.POST)
+        invoice_form = InvoiceForm(request.POST)
+
+        if booking_form.is_valid() and invoice_form.is_valid():
+            booking = booking_form.save(commit=False)
+            booking.customer = request.user.customer
+            booking.room_number = room
+            booking.hotel_name = room.hotel  # Save the hotel's name with the booking
+            booking.booking_date = timezone.now()
+            booking.day_stay = booking_form.cleaned_data['day_stay']
+
+            # Calculate total amount
+            total_amount = booking.day_stay * room.price_per_night
+
+            invoice = invoice_form.save(commit=False)
+            invoice.booking = booking
+            invoice.total_amount = total_amount
+            invoice.invoice_date = timezone.now()  # Automatically set the invoice date
+
+            # Save both the booking and the invoice
+            booking.save()
+            invoice.save()
+
+            return redirect('customer:booking_list')  # Redirect to the booking list after successful booking
+
+    else:
+        booking_form = BookingForm()
+        invoice_form = InvoiceForm()
+
+    return render(request, 'book_room.html', {
+        'room': room,
+        'booking_form': booking_form,
+        'invoice_form': invoice_form
+    })

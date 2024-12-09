@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}
+Đặt Phòng
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h1 class="text-center mb-4">Đặt Phòng tại {{ room.hotel_name }}</h1>
+
+    <form method="POST" action="{% url 'customer:book_room' room.id %}">
+        {% csrf_token %}
+        {{ booking_form.as_p }}
+        {{ invoice_form.as_p }}
+        <button type="submit" class="btn btn-primary">Đặt Phòng</button>
+    </form>
+</div>
+{% endblock %}

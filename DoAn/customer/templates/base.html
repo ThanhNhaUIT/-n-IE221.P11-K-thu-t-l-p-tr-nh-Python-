@@ -28,8 +28,8 @@
                 <div class="text-end">
                     {% if user.is_authenticated %}
                         <!-- Hiển thị thông tin khi đã đăng nhập -->
-                        <span class="me-3">Chào, {{ user.first_name }}</span>
-                        <a href="{% url 'logout' %}" class="btn btn-warning">Đăng xuất</a>
+                        <span class="me-3">Chào, #</span>
+                        <a href="#" class="btn btn-warning">Đăng xuất</a>
                     {% else %}
                         <!-- Hiển thị nút đăng nhập/đăng ký nếu chưa đăng nhập -->
                         <a href="{% url 'customer:login' %}" class="btn btn-outline-light me-2">Đăng nhập</a>

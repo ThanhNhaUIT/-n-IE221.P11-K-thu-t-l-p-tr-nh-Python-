@@ -13,13 +13,13 @@ Danh Sách Khách Sạn
             {% for hotel in hotels %}
                 <div class="col-md-4 mb-4">
                     <div class="card">
-                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Hotel Image">
+                        <img src="{{ hotel.ImageURL }}" class="card-img-top" alt="Hotel Image"  style="width: 100%; height: 300px; object-fit: cover;">
                         <div class="card-body">
                             <h5 class="card-title">{{ hotel.hotel_name }}</h5>
                             <p class="card-text">{{ hotel.address }}</p>
                             <p><strong>Số điện thoại:</strong> {{ hotel.phone_number }}</p>
                             <p><strong>Email:</strong> <a href="mailto:{{ hotel.email }}">{{ hotel.email }}</a></p>
-                            <a href="#" class="btn btn-primary">Xem Chi Tiết</a>
+                            <a href="{% url 'customer:room_list' hotel.id %}" class="btn btn-primary">Xem Chi Tiết</a>
                         </div>
                     </div>
                 </div>
